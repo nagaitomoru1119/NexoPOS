@@ -1,20 +1,19 @@
-const { Vue }       =   require( './../bootstrap' );
-const nsButton      =   Vue.component( 'ns-button', {
+const { Vue }       =   require( '../bootstrap' );
+const nsButton      =   Vue.component( 'ns-link', {
     data: () => {
         return {
             clicked: false,
             _save: 0
         }
     },
-    props: [ 'type', 'button', 'href', 'routerLink', 'to' ],
+    props: [ 'type', 'to' ],
     template: `
-    <div class="flex" @click="$emit( 'click' )">
-        <button v-if="button" :class="buttonclass" class="rounded cursor-pointer py-2 px-3 font-semibold"><slot></slot></button>
-        <router-link  :to="to" v-if="routerLink" :class="buttonclass" class="rounded cursor-pointer py-2 px-3 font-semibold"><slot></slot></router-link>
-        <a v-if="!button" :href="href" :class="buttonclass" class="rounded cursor-pointer py-2 px-3 font-semibold"><slot></slot></a>
+    <div class="flex">
+        <router-link :to="to" :class="buttonclass" class="rounded cursor-pointer py-2 px-3 font-semibold"><slot></slot></router-link>
     </div>
     `,
     mounted() {
+        console.log( this );
     },
     computed: {
         buttonclass() {

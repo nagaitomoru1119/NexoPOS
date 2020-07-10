@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/js/dashboard"],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/js/components"],{
 
 /***/ "./node_modules/moment/locale sync recursive ^\\.\\/.*$":
 /*!**************************************************!*\
@@ -34361,31 +34361,6 @@ module.exports.nsSubmenu = nsSubmenu;
 
 /***/ }),
 
-/***/ "./resources/js/dashboard.js":
-/*!***********************************!*\
-  !*** ./resources/js/dashboard.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _require = __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"),
-    Vue = _require.Vue;
-
-var components = __webpack_require__(/*! ./components/components */ "./resources/js/components/components.js");
-
-new Vue({
-  el: '#dashboard-aside',
-  mounded: function mounded() {}
-});
-new Vue({
-  el: '#dashboard-content',
-  mounted: function mounted() {
-    console.log('mounted');
-  }
-});
-
-/***/ }),
-
 /***/ "./resources/js/libraries/event-emitter.js":
 /*!*************************************************!*\
   !*** ./resources/js/libraries/event-emitter.js ***!
@@ -34446,28 +34421,16 @@ module.exports.EventEmitter = EventEmitter;
 
 /***/ }),
 
-/***/ "./resources/sass/app.scss":
-/*!*********************************!*\
-  !*** ./resources/sass/app.scss ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 0:
-/*!*******************************************************************!*\
-  !*** multi ./resources/js/dashboard.js ./resources/sass/app.scss ***!
-  \*******************************************************************/
+/***/ 1:
+/*!*****************************************************!*\
+  !*** multi ./resources/js/components/components.js ***!
+  \*****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/NexoPOS-v4/resources/js/dashboard.js */"./resources/js/dashboard.js");
-module.exports = __webpack_require__(/*! /var/www/html/NexoPOS-v4/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /var/www/html/NexoPOS-v4/resources/js/components/components.js */"./resources/js/components/components.js");
 
 
 /***/ })
 
-},[[0,"/js/manifest","/js/vendor"]]]);
+},[[1,"/js/manifest","/js/vendor"]]]);
