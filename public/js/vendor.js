@@ -1896,7 +1896,7 @@ eval("module.exports = function(module) {\n\tif (!module.webpackPolyfill) {\n\t\
 
 /***/ }),
 
-/***/ 2:
+/***/ 3:
 /*!**********************************************!*\
   !*** multi vue lodash chart.js axios moment ***!
   \**********************************************/

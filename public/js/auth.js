@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/js/app"],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/js/auth"],{
 
 /***/ "./node_modules/moment/locale sync recursive ^\\.\\/.*$":
 /*!**************************************************!*\
@@ -89,14 +89,15 @@ eval("module.exports = function(module) {\n\tif (!module.webpackPolyfill) {\n\t\
 
 /***/ }),
 
-/***/ "./resources/js/app.js":
-/*!*****************************!*\
-  !*** ./resources/js/app.js ***!
-  \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./resources/js/auth.js":
+/*!******************************!*\
+  !*** ./resources/js/auth.js ***!
+  \******************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-eval("var _require = __webpack_require__(/*! ./bootstrap */ \"./resources/js/bootstrap.js\"),\n    Vue = _require.Vue;\n\nvar _require2 = __webpack_require__(/*! ./components/components */ \"./resources/js/components/components.js\"),\n    nsButton = _require2.nsButton,\n    nsCheckbox = _require2.nsCheckbox,\n    nsCrud = _require2.nsCrud,\n    nsMenu = _require2.nsMenu,\n    nsSubmenu = _require2.nsSubmenu;\n\nnew window.Vue({\n  el: '#dashboard-aside',\n  mounded: function mounded() {\n    console.log(nsMenu);\n  }\n});\nnew window.Vue({\n  el: '#dashboard-content',\n  mounted: function mounted() {\n    console.log('mounted');\n  }\n});//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvanMvYXBwLmpzPzZkNDAiXSwibmFtZXMiOlsicmVxdWlyZSIsIlZ1ZSIsIm5zQnV0dG9uIiwibnNDaGVja2JveCIsIm5zQ3J1ZCIsIm5zTWVudSIsIm5zU3VibWVudSIsIndpbmRvdyIsImVsIiwibW91bmRlZCIsImNvbnNvbGUiLCJsb2ciLCJtb3VudGVkIl0sIm1hcHBpbmdzIjoiZUFBNEJBLG1CQUFPLENBQUMsZ0RBQUQsQztJQUEzQkMsRyxZQUFBQSxHOztnQkFPQUQsbUJBQU8sQ0FBRSx3RUFBRixDO0lBTFhFLFEsYUFBQUEsUTtJQUNBQyxVLGFBQUFBLFU7SUFDQUMsTSxhQUFBQSxNO0lBQ0FDLE0sYUFBQUEsTTtJQUNBQyxTLGFBQUFBLFM7O0FBR0osSUFBSUMsTUFBTSxDQUFDTixHQUFYLENBQWU7QUFDWE8sSUFBRSxFQUFFLGtCQURPO0FBRVhDLFNBRlcscUJBRUQ7QUFDTkMsV0FBTyxDQUFDQyxHQUFSLENBQWFOLE1BQWI7QUFDSDtBQUpVLENBQWY7QUFPQSxJQUFJRSxNQUFNLENBQUNOLEdBQVgsQ0FBZTtBQUNYTyxJQUFFLEVBQUUsb0JBRE87QUFFWEksU0FGVyxxQkFFRDtBQUNORixXQUFPLENBQUNDLEdBQVIsQ0FBYSxTQUFiO0FBQ0g7QUFKVSxDQUFmIiwiZmlsZSI6Ii4vcmVzb3VyY2VzL2pzL2FwcC5qcy5qcyIsInNvdXJjZXNDb250ZW50IjpbImNvbnN0IHsgVnVlIH0gICAgICAgICAgID0gICByZXF1aXJlKCcuL2Jvb3RzdHJhcCcpOyBcbmNvbnN0IHsgXG4gICAgbnNCdXR0b24sXG4gICAgbnNDaGVja2JveCxcbiAgICBuc0NydWQsXG4gICAgbnNNZW51LFxuICAgIG5zU3VibWVudSBcbn0gICA9ICAgcmVxdWlyZSggJy4vY29tcG9uZW50cy9jb21wb25lbnRzJyApO1xuXG5uZXcgd2luZG93LlZ1ZSh7XG4gICAgZWw6ICcjZGFzaGJvYXJkLWFzaWRlJyxcbiAgICBtb3VuZGVkKCkge1xuICAgICAgICBjb25zb2xlLmxvZyggbnNNZW51ICk7XG4gICAgfVxufSk7XG5cbm5ldyB3aW5kb3cuVnVlKHtcbiAgICBlbDogJyNkYXNoYm9hcmQtY29udGVudCcsXG4gICAgbW91bnRlZCgpIHtcbiAgICAgICAgY29uc29sZS5sb2coICdtb3VudGVkJyApO1xuICAgIH1cbn0pOyJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./resources/js/app.js\n");
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap */ \"./resources/js/bootstrap.js\");\n/* harmony import */ var _components_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/components */ \"./resources/js/components/components.js\");\n/* harmony import */ var _components_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_components_components__WEBPACK_IMPORTED_MODULE_1__);\n\n\nnew _bootstrap__WEBPACK_IMPORTED_MODULE_0__[\"Vue\"]({\n  el: '#nexopos-authentication'\n});//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvanMvYXV0aC5qcz84ZjRmIl0sIm5hbWVzIjpbIlZ1ZSIsImVsIl0sIm1hcHBpbmdzIjoiQUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQ0E7QUFRQSxJQUFJQSw4Q0FBSixDQUFRO0FBQ0pDLElBQUUsRUFBRTtBQURBLENBQVIiLCJmaWxlIjoiLi9yZXNvdXJjZXMvanMvYXV0aC5qcy5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IFZ1ZSB9IGZyb20gJy4vYm9vdHN0cmFwJztcbmltcG9ydCB7IFxuICAgIG5zQnV0dG9uLFxuICAgIG5zQ2hlY2tib3gsXG4gICAgbnNDcnVkLFxuICAgIG5zTWVudSxcbiAgICBuc1N1Ym1lbnUgXG59IGZyb20gJy4vY29tcG9uZW50cy9jb21wb25lbnRzJztcblxubmV3IFZ1ZSh7XG4gICAgZWw6ICcjbmV4b3Bvcy1hdXRoZW50aWNhdGlvbidcbn0pOyJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./resources/js/auth.js\n");
 
 /***/ }),
 
@@ -281,28 +282,16 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 /***/ }),
 
-/***/ "./resources/sass/app.scss":
-/*!*********************************!*\
-  !*** ./resources/sass/app.scss ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("// removed by extract-text-webpack-plugin//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvc2Fzcy9hcHAuc2Nzcz80NGJjIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBIiwiZmlsZSI6Ii4vcmVzb3VyY2VzL3Nhc3MvYXBwLnNjc3MuanMiLCJzb3VyY2VzQ29udGVudCI6WyIvLyByZW1vdmVkIGJ5IGV4dHJhY3QtdGV4dC13ZWJwYWNrLXBsdWdpbiJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./resources/sass/app.scss\n");
-
-/***/ }),
-
-/***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-  \*************************************************************/
+/***/ 1:
+/*!************************************!*\
+  !*** multi ./resources/js/auth.js ***!
+  \************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/NexoPOS-v4/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/html/NexoPOS-v4/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /var/www/html/NexoPOS-v4/resources/js/auth.js */"./resources/js/auth.js");
 
 
 /***/ })
 
-},[[0,"/js/manifest","/js/vendor"]]]);
+},[[1,"/js/manifest","/js/vendor"]]]);
