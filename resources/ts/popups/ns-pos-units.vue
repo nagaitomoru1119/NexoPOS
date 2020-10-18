@@ -3,32 +3,32 @@
         <div id="header" class="h-16 flex justify-center items-center flex-shrink-0">
             <h3 class="font-bold text-gray-700">Choose Selling Unit</h3>
         </div>
-        <div v-if="units.length > 0" class="grid grid-flow-row grid-cols-2 overflow-y-auto">
-            <div @click="selectUnit( unit )" :key="unit.id" v-for="unit of units" class="hover:bg-gray-200 cursor-pointer border flex-shrink-0 border-gray-200 flex flex-col items-center justify-center">
+        <div v-if="unitsQuantities.length > 0" class="grid grid-flow-row grid-cols-2 overflow-y-auto">
+            <div @click="selectUnit( unitQuantity )" :key="unitQuantity.id" v-for="unitQuantity of unitsQuantities" class="hover:bg-gray-200 cursor-pointer border flex-shrink-0 border-gray-200 flex flex-col items-center justify-center">
                 <div class="h-40 w-full flex items-center justify-center overflow-hidden">
-                    <img v-if="unit.preview_url" :src="unit.preview_url" class="object-cover h-full" :alt="unit.name">
-                    <div class="h-40 flex items-center justify-center" v-if="! unit.preview_url">
+                    <img v-if="unitQuantity.preview_url" :src="unitQuantity.preview_url" class="object-cover h-full" :alt="unitQuantity.unit.name">
+                    <div class="h-40 flex items-center justify-center" v-if="! unitQuantity.preview_url">
                         <i class="las la-image text-gray-600 text-6xl"></i>
                     </div>
                 </div>
                 <div class="h-0 w-full">
                     <div class="relative w-full flex items-center justify-center -top-10 h-20 py-2" style="background:rgb(255 255 255 / 73%)">
-                        <h3 class="text-sm font-bold text-gray-700 py-2 text-center">{{ unit.name }} ({{ unit.quantities === null ? 0 : unit.quantities.quantity }})</h3>
+                        <h3 class="text-sm font-bold text-gray-700 py-2 text-center">{{ unitQuantity.unit.name }} ({{ unitQuantity .quantity }})</h3>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="h-56 flex items-center justify-center" v-if="units.length === 0">
+        <div class="h-56 flex items-center justify-center" v-if="unitsQuantities.length === 0">
             <ns-spinner></ns-spinner>
         </div>
     </div>
 </template>
 <script>
-import { nsHttpClient, nsSnackBar } from '../../../../bootstrap';
+import { nsHttpClient, nsSnackBar } from '@/bootstrap';
 export default {
     data() {
         return {
-            units: []
+            unitsQuantities: []
         }
     },
     mounted() {
@@ -54,14 +54,15 @@ export default {
     },
     methods: {
         loadUnits() {
-            nsHttpClient.get( `/api/nexopos/v4/units/pos?ids=${this.$popupParams.product.$original().selling_unit_ids}&product_id=${this.$popupParams.product.$original().id}` )
+            nsHttpClient.get( `/api/nexopos/v4/products/${this.$popupParams.product.$original().id}/units/quantities` )
                 .subscribe( result => {
+                    
                     if ( result.length === 0 ) {
                         this.$popup.close();
                         return nsSnackBar.error( 'This product doesn\'t has any unit defined for selling.' ).subscribe();
                     }
 
-                    this.units  =   result;
+                    this.unitsQuantities  =   result;
                 })
         },
         /**
@@ -70,10 +71,11 @@ export default {
          * built at the end
          * @param Unit
          */
-        selectUnit( unit ) {
+        selectUnit( unitQuantity ) {
             this.$popupParams.resolve({
-                unit_id     :   unit.id,
-                unit_name   :   unit.name
+                unit_quantity_id    :   unitQuantity.id,
+                unit_name           :   unitQuantity.unit.name,
+                $quantities         :   () => unitQuantity
             });
             this.$popup.close();
             // this.types.forEach( type => type.selected = false );

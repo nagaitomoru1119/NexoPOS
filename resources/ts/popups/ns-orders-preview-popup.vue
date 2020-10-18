@@ -3,6 +3,9 @@ import { nsHttpClient } from "@/bootstrap";
 import { nsCurrency } from "@/filters/currency";
 import { forkJoin } from "rxjs";
 
+/**
+ * @var {ExtendedVue}
+ */
 const nsOrderPreviewPopup   =   {
     filters: {
         nsCurrency

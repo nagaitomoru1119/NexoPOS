@@ -90,8 +90,6 @@ export default {
                         .subscribe();
                 }
 
-                this.isLoading                  =   true;
-
                 /**
                  * The stock should be handled differently
                  * according to wether the stock management
@@ -106,42 +104,31 @@ export default {
                      * when a product is already on the cart product.id is not set but
                      * product.product_id is defined
                      */
-                    nsHttpClient.get( `/api/nexopos/v4/products/${ product.$original().id }/units/${ data.unit_id }/quantity` )
-                        .subscribe( result => {
-                            this.isLoading      =   false;
-                            const holdQuantity  =   POS.getStockUsage( product.$original().id, data.unit_id ) - ( product.quantity || 0 );
+                    const holdQuantity  =   POS.getStockUsage( product.$original().id, data.unit_quantity_id ) - ( product.quantity || 0 );
 
+                    /**
+                     * This checks if there is enough
+                     * quantity for product that has stock 
+                     * management enabled
+                     */
+
+                    if ( 
+                        quantity > (
+                            parseFloat( data.$quantities().quantity ) -
                             /**
-                             * This checks if there is enough
-                             * quantity for product that has stock 
-                             * management enabled
+                             * We'll make sure to ignore the product quantity 
+                             * already added to the cart by substracting the 
+                             * provided quantity.
                              */
-
-                            if ( 
-                                quantity > (
-                                    parseFloat( result.quantity ) -
-                                    /**
-                                     * We'll make sure to ignore the product quantity 
-                                     * already added to the cart by substracting the 
-                                     * provided quantity.
-                                     */
-                                    ( holdQuantity )
-                                )
-                            ) {
-                                return nsSnackBar.error( 'Unable to add the product, there is not enough stock. Remaining %s'.replace( '%s', ( result.quantity - holdQuantity ) ) )
-                                    .subscribe();
-                            }
-    
-                            this.resolve({ quantity });
-                            
-                        }, ( error ) => {
-                            this.isLoading  =   false;
-                            nsSnackBar.error( error.message )
-                                .subscribe();
-                        });
-                } else {
-                    this.resolve({ quantity });
+                            ( holdQuantity )
+                        )
+                    ) {
+                        return nsSnackBar.error( 'Unable to add the product, there is not enough stock. Remaining %s'.replace( '%s', ( data.$quantities().quantity - holdQuantity ) ) )
+                            .subscribe();
+                    }
                 }
+
+                this.resolve({ quantity });
 
             } else if ( key.identifier === 'backspace' ) {
                 if ( this.allSelected ) {
