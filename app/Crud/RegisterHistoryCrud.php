@@ -9,44 +9,44 @@ use App\Exceptions\NotAllowedException;
 use App\Models\User;
 use TorMorten\Eventy\Facades\Events as Hook;
 use Exception;
-use App\Models\Register;
-use App\Services\Helper;
+use App\Models\RegisterHistory;
+use App\Services\CashRegistersService;
 
-class RegisterCrud extends CrudService
+class RegisterHistoryCrud extends CrudService
 {
     /**
      * define the base table
      * @param  string
      */
-    protected $table      =   'nexopos_registers';
+    protected $table      =   'nexopos_registers_history';
 
     /**
      * default slug
      * @param  string
      */
-    protected $slug   =   'cash-registers';
+    protected $slug   =   'registers-history';
 
     /**
      * Define namespace
      * @param  string
      */
-    protected $namespace  =   'ns.registers';
+    protected $namespace  =   'ns.registers-hitory';
 
     /**
      * Model Used
      * @param  string
      */
-    protected $model      =   Register::class;
+    protected $model      =   RegisterHistory::class;
 
     /**
      * Define permissions
      * @param  array
      */
     protected $permissions  =   [
-        'create'    =>  'nexopos.create.registers',
-        'read'      =>  'nexopos.read.registers',
-        'update'    =>  'nexopos.update.registers',
-        'delete'    =>  'nexopos.delete.registers',
+        'create'    =>  false,
+        'read'      =>  true,
+        'update'    =>  false,
+        'delete'    =>  false,
     ];
 
     /**
@@ -54,10 +54,8 @@ class RegisterCrud extends CrudService
      * @param  array
      */
     public $relations   =  [
-        [ 'nexopos_users as user', 'nexopos_registers.author', '=', 'user.id' ],
-        'leftJoin'  =>  [
-            [ 'nexopos_users as cashier', 'nexopos_registers.used_by', '=', 'cashier.id' ],
-        ]
+        // [ 'nexopos_registers as register', 'register.id', '=', 'nexopos_registers_history.register_id' ],
+        [ 'nexopos_users as user', 'user.id', '=', 'nexopos_registers_history.author' ],
     ];
 
     /**
@@ -78,8 +76,8 @@ class RegisterCrud extends CrudService
      * ]
      */
     public $pick        =   [
+        // 'register'  =>  [ 'name' ],
         'user'      =>  [ 'username' ],
-        'cashier'   =>  [ 'username' ],
     ];
 
     /**
@@ -97,7 +95,12 @@ class RegisterCrud extends CrudService
     /**
      * Fields which will be filled during post/put
      */
-        public $fillable    =   [];
+    public $fillable    =   [];
+
+    /**
+     * @param CashRegistersService;
+     */
+    private $registerService;
 
     /**
      * Define Constructor
@@ -108,6 +111,8 @@ class RegisterCrud extends CrudService
         parent::__construct();
 
         Hook::addFilter( $this->namespace . '-crud-actions', [ $this, 'setActions' ], 10, 2 );
+
+        $this->registerService      =   app()->make( CashRegistersService::class );
     }
 
     /**
@@ -118,16 +123,23 @@ class RegisterCrud extends CrudService
     public function getLabels()
     {
         return [
-            'list_title'            =>  __( 'Registers List' ),
-            'list_description'      =>  __( 'Display all registers.' ),
-            'no_entry'              =>  __( 'No registers has been registered' ),
-            'create_new'            =>  __( 'Add a new register' ),
-            'create_title'          =>  __( 'Create a new register' ),
-            'create_description'    =>  __( 'Register a new register and save it.' ),
-            'edit_title'            =>  __( 'Edit register' ),
-            'edit_description'      =>  __( 'Modify  Register.' ),
-            'back_to_list'          =>  __( 'Return to Registers' ),
+            'list_title'            =>  __( 'Register History List' ),
+            'list_description'      =>  __( 'Display all register histories.' ),
+            'no_entry'              =>  __( 'No register histories has been registered' ),
+            'create_new'            =>  __( 'Add a new register history' ),
+            'create_title'          =>  __( 'Create a new register history' ),
+            'create_description'    =>  __( 'Register a new register history and save it.' ),
+            'edit_title'            =>  __( 'Edit register history' ),
+            'edit_description'      =>  __( 'Modify  Registerhistory.' ),
+            'back_to_list'          =>  __( 'Return to Register History' ),
         ];
+    }
+
+    public function hook( $query )
+    {
+        if ( ! empty( request()->query( 'register_id' ) ) ) {
+            $query->where( 'register_id', request()->query( 'register_id' ) );
+        }
     }
 
     /**
@@ -149,8 +161,8 @@ class RegisterCrud extends CrudService
         return [
             'main' =>  [
                 'label'         =>  __( 'Name' ),
-                'name'          =>  'name',
-                'value'         =>  $entry->name ?? '',
+                // 'name'          =>  'name',
+                // 'value'         =>  $entry->name ?? '',
                 'description'   =>  __( 'Provide a name to the resource.' )
             ],
             'tabs'  =>  [
@@ -158,23 +170,51 @@ class RegisterCrud extends CrudService
                     'label'     =>  __( 'General' ),
                     'fields'    =>  [
                         [
-                            'type'  =>  'select',
-                            'name'  =>  'status',
-                            'label' =>  __( 'Status' ),
-                            'options'   =>  Helper::kvToJsOptions([
-                                Register::STATUS_DISABLED     =>  __( 'Disabled' ),
-                                Register::STATUS_CLOSED     =>  __( 'Closed' ),
-                            ]),
-                            'description'   =>  __( 'Define what is the status of the register.' ),
-                            'value' =>  $entry->status ?? '',
+                            'type'  =>  'text',
+                            'name'  =>  'id',
+                            'label' =>  __( 'Id' ),
+                            'value' =>  $entry->id ?? '',
                         ], [
-                            'type'  =>  'textarea',
+                            'type'  =>  'text',
+                            'name'  =>  'register_id',
+                            'label' =>  __( 'Register_id' ),
+                            'value' =>  $entry->register_id ?? '',
+                        ], [
+                            'type'  =>  'text',
+                            'name'  =>  'action',
+                            'label' =>  __( 'Action' ),
+                            'value' =>  $entry->action ?? '',
+                        ], [
+                            'type'  =>  'text',
+                            'name'  =>  'author',
+                            'label' =>  __( 'Author' ),
+                            'value' =>  $entry->author ?? '',
+                        ], [
+                            'type'  =>  'text',
+                            'name'  =>  'value',
+                            'label' =>  __( 'Value' ),
+                            'value' =>  $entry->value ?? '',
+                        ], [
+                            'type'  =>  'text',
+                            'name'  =>  'uuid',
+                            'label' =>  __( 'Uuid' ),
+                            'value' =>  $entry->uuid ?? '',
+                        ], [
+                            'type'  =>  'text',
+                            'name'  =>  'created_at',
+                            'label' =>  __( 'Created_at' ),
+                            'value' =>  $entry->created_at ?? '',
+                        ], [
+                            'type'  =>  'text',
+                            'name'  =>  'updated_at',
+                            'label' =>  __( 'Updated_at' ),
+                            'value' =>  $entry->updated_at ?? '',
+                        ], [
+                            'type'  =>  'text',
                             'name'  =>  'description',
                             'label' =>  __( 'Description' ),
                             'value' =>  $entry->description ?? '',
-                            'description'   =>  __( 'Provide mode details about this cash register.' )
-                        ], 
-                    ]
+                        ],                     ]
                 ]
             ]
         ];
@@ -195,7 +235,7 @@ class RegisterCrud extends CrudService
      * @param  array of fields
      * @return  array of fields
      */
-    public function filterPutInputs( $inputs, Register $entry )
+    public function filterPutInputs( $inputs, RegisterHistory $entry )
     {
         return $inputs;
     }
@@ -219,10 +259,10 @@ class RegisterCrud extends CrudService
     /**
      * After saving a record
      * @param  Request $request
-     * @param  Register $entry
+     * @param  RegisterHistory $entry
      * @return  void
      */
-    public function afterPost( $request, Register $entry )
+    public function afterPost( $request, RegisterHistory $entry )
     {
         return $request;
     }
@@ -273,7 +313,7 @@ class RegisterCrud extends CrudService
      * @return  void
      */
     public function beforeDelete( $namespace, $id, $model ) {
-        if ( $namespace == 'ns.registers' ) {
+        if ( $namespace == 'ns.registers-hitory' ) {
             /**
              *  Perform an action before deleting an entry
              *  In case something wrong, this response can be returned
@@ -288,10 +328,6 @@ class RegisterCrud extends CrudService
             } else {
                 throw new NotAllowedException;
             }
-
-            if ( $model->status === Register::STATUS_OPENED ) {
-                throw new NotAllowedException( __( 'Unable to delete a register that is currently in use' ) );
-            }
         }
     }
 
@@ -301,23 +337,13 @@ class RegisterCrud extends CrudService
      */
     public function getColumns() {
         return [
-            'name'  =>  [
-                'label'  =>  __( 'Name' ),
-                '$direction'    =>  '',
-                '$sort'         =>  false
-            ],
-            'status'  =>  [
-                'label'  =>  __( 'Status' ),
-                '$direction'    =>  '',
-                '$sort'         =>  false
-            ],
-            'cashier_username'  =>  [
-                'label'  =>  __( 'Used By' ),
-                '$direction'    =>  '',
-                '$sort'         =>  false
-            ],
-            'balance'  =>  [
-                'label'         =>  __( 'Balance' ),
+            // 'register_name'  =>  [
+            //     'label'         =>  __( 'Register Name' ),
+            //     '$direction'    =>  '',
+            //     '$sort'         =>  false
+            // ],
+            'action'  =>  [
+                'label'  =>  __( 'Action' ),
                 '$direction'    =>  '',
                 '$sort'         =>  false
             ],
@@ -326,8 +352,13 @@ class RegisterCrud extends CrudService
                 '$direction'    =>  '',
                 '$sort'         =>  false
             ],
+            'value'  =>  [
+                'label'  =>  __( 'Value' ),
+                '$direction'    =>  '',
+                '$sort'         =>  false
+            ],
             'created_at'  =>  [
-                'label'  =>  __( 'Created At' ),
+                'label'  =>  __( 'Done At' ),
                 '$direction'    =>  '',
                 '$sort'         =>  false
             ],
@@ -340,11 +371,34 @@ class RegisterCrud extends CrudService
     public function setActions( $entry, $namespace )
     {
         // Don't overwrite
-        $entry->{ '$checked' }      =   false;
-        $entry->{ '$toggled' }      =   false;
-        $entry->{ '$id' }           =   $entry->id;
-        $entry->cashier_username    =   $entry->cashier_username ?: __( 'N/A' );
-        $entry->balance             =   ( string ) ns()->currency->define( $entry->balance );
+        $entry->{ '$checked' }  =   false;
+        $entry->{ '$toggled' }  =   false;
+        $entry->{ '$id' }       =   $entry->id;
+        
+        switch( $entry->action ) {
+            case RegisterHistory::ACTION_SALE: 
+                $entry->{ '$cssClass' }    =   'bg-green-100 border-b border-green-200';
+            break;
+            case RegisterHistory::ACTION_CASHING: 
+                $entry->{ '$cssClass' }    =   'bg-green-100 border-b border-green-200';
+            break;
+            case RegisterHistory::ACTION_OPENING: 
+                $entry->{ '$cssClass' }    =   'bg-blue-100 border-b border-blue-200';
+            break;
+            case RegisterHistory::ACTION_CASHOUT: 
+                $entry->{ '$cssClass' }    =   'bg-red-100 border-b border-red-200';
+            break;
+            case RegisterHistory::ACTION_CASHOUT: 
+                $entry->{ '$cssClass' }    =   'bg-red-100 border-b border-red-200';
+            break;
+            case RegisterHistory::ACTION_CLOSING: 
+                $entry->{ '$cssClass' }    =   'bg-orange-100 border-b border-orange-200';
+            break;
+        }
+
+        $entry->action      =   $this->registerService->getActionLabel( $entry->action );
+        $entry->created_at  =   ns()->date->getFormatted( $entry->created_at );
+        $entry->value       =   ( string ) ns()->currency->define( $entry->value );
 
         // you can make changes here
         $entry->{'$actions'}    =   [
@@ -352,17 +406,12 @@ class RegisterCrud extends CrudService
                 'label'         =>      __( 'Edit' ),
                 'namespace'     =>      'edit',
                 'type'          =>      'GOTO',
-                'url'           =>      ns()->url( '/dashboard/' . 'cash-registers' . '/edit/' . $entry->id )
-            ], [
-                'label'         =>      __( 'Register History' ),
-                'namespace'     =>      'edit',
-                'type'          =>      'GOTO',
-                'url'           =>      ns()->url( '/dashboard/' . 'cash-registers' . '/history/' . $entry->id )
+                'url'           =>      ns()->url( '/dashboard/' . '' . '/edit/' . $entry->id )
             ], [
                 'label'     =>  __( 'Delete' ),
                 'namespace' =>  'delete',
                 'type'      =>  'DELETE',
-                'url'       =>  ns()->url( '/api/nexopos/v4/crud/ns.registers/' . $entry->id ),
+                'url'       =>  ns()->url( '/api/nexopos/v4/crud/ns.registers-hitory/' . $entry->id ),
                 'confirm'   =>  [
                     'message'  =>  __( 'Would you like to delete this ?' ),
                 ]
@@ -403,7 +452,7 @@ class RegisterCrud extends CrudService
 
             foreach ( $request->input( 'entries' ) as $id ) {
                 $entity     =   $this->model::find( $id );
-                if ( $entity instanceof Register ) {
+                if ( $entity instanceof RegisterHistory ) {
                     $entity->delete();
                     $status[ 'success' ]++;
                 } else {
@@ -423,11 +472,11 @@ class RegisterCrud extends CrudService
     public function getLinks()
     {
         return  [
-            'list'      =>  ns()->url( 'dashboard/' . 'cash-registers' ),
-            'create'    =>  ns()->url( 'dashboard/' . 'cash-registers/create' ),
-            'edit'      =>  ns()->url( 'dashboard/' . 'cash-registers/edit/' ),
-            'post'      =>  ns()->url( 'api/nexopos/v4/crud/' . 'ns.registers' ),
-            'put'       =>  ns()->url( 'api/nexopos/v4/crud/' . 'ns.registers/{id}' . '' ),
+            'list'      =>  ns()->url( 'dashboard/' . 'registers-history' ),
+            'create'    =>  ns()->url( 'dashboard/' . 'registers-history/create' ),
+            'edit'      =>  ns()->url( 'dashboard/' . 'registers-history/edit/' ),
+            'post'      =>  ns()->url( 'api/nexopos/v4/crud/' . 'ns.registers-hitory' ),
+            'put'       =>  ns()->url( 'api/nexopos/v4/crud/' . 'ns.registers-hitory/{id}' . '' ),
         ];
     }
 
