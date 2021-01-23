@@ -1,11 +1,10 @@
 <?php
 
-use App\Classes\Hook;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use App\Classes\Schema;;
+use App\Classes\Schema;
 
-class CreateCustomersCouponsTable extends Migration
+class CreateCouponsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +13,7 @@ class CreateCustomersCouponsTable extends Migration
      */
     public function up()
     {
-        Schema::createIfMissing( 'nexopos_customers_coupons', function (Blueprint $table) {
+        Schema::createIfMissing( 'nexopos_coupons', function (Blueprint $table) {
             $table->id();
             $table->string( 'name' );
             $table->string( 'code' );
@@ -25,20 +24,18 @@ class CreateCustomersCouponsTable extends Migration
             $table->float( 'maximum_cart_value' )->default(0)->nullable();
             $table->datetime( 'valid_hours_start' )->nullable();
             $table->datetime( 'valid_hours_end' )->nullable();
-            $table->integer( 'customer_id' )->nullable();
-            $table->boolean( 'assigned' )->default(false);
             $table->float( 'limit_usage' )->default(0); // unlimited
             $table->integer( 'author' );
             $table->timestamps();
         });
 
-        Schema::createIfMissing( 'nexopos_customers_coupons_products', function (Blueprint $table) {
+        Schema::createIfMissing( 'nexopos_coupons_products', function (Blueprint $table) {
             $table->id();
             $table->integer( 'coupon_id' );
             $table->integer( 'product_id' );
         });
 
-        Schema::createIfMissing( 'nexopos_customers_coupons_categories', function (Blueprint $table) {
+        Schema::createIfMissing( 'nexopos_coupons_categories', function (Blueprint $table) {
             $table->id();
             $table->integer( 'coupon_id' );
             $table->integer( 'category_id' );
@@ -52,8 +49,8 @@ class CreateCustomersCouponsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists( Hook::filter( 'ns-table-prefix', 'nexopos_customers_coupons') );
-        Schema::dropIfExists( Hook::filter( 'ns-table-prefix', 'nexopos_customers_coupons_products') );
-        Schema::dropIfExists( Hook::filter( 'ns-table-prefix', 'nexopos_customers_coupons_categories') );
+        Schema::dropIfExists('nexopos_coupons');
+        Schema::dropIfExists('nexopos_coupons_products');
+        Schema::dropIfExists('nexopos_coupons_categories');
     }
 }
