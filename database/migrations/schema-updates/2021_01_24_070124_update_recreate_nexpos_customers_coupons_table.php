@@ -1,11 +1,10 @@
 <?php
 
-use App\Classes\Hook;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use App\Classes\Schema;;
+use App\Classes\Schema;
 
-class CreateCustomersCouponsTable extends Migration
+class UpdateRecreateNexposCustomersCouponsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,6 +13,7 @@ class CreateCustomersCouponsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists( 'nexopos_customers_coupons' );
         Schema::createIfMissing( 'nexopos_customers_coupons', function (Blueprint $table) {
             $table->id();
             $table->string( 'name' );
@@ -34,7 +34,5 @@ class CreateCustomersCouponsTable extends Migration
     public function down()
     {
         Schema::dropIfExists( 'nexopos_customers_coupons' );
-        Schema::dropIfExists( 'nexopos_customers_coupons_products' );
-        Schema::dropIfExists( 'nexopos_customers_coupons_categories' );
     }
 }
