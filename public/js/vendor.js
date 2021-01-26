@@ -5424,6 +5424,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 /***/ }),
 
+/***/ "./resources/ts/libraries/lang.ts":
+/*!****************************************!*\
+  !*** ./resources/ts/libraries/lang.ts ***!
+  \****************************************/
+/*! exports provided: __ */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"__\", function() { return __; });\nvar __ = function (text) {\n    return text;\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvdHMvbGlicmFyaWVzL2xhbmcudHM/NjEwMSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtBQUFBO0FBQU8sSUFBTSxFQUFFLEdBQU8sVUFBVSxJQUFJO0lBQ2hDLE9BQU8sSUFBSSxDQUFDO0FBQ2hCLENBQUMiLCJmaWxlIjoiLi9yZXNvdXJjZXMvdHMvbGlicmFyaWVzL2xhbmcudHMuanMiLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgY29uc3QgX18gICA9ICAgZnVuY3Rpb24oIHRleHQgKSB7XG4gICAgcmV0dXJuIHRleHQ7XG59Il0sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///./resources/ts/libraries/lang.ts\n");
+
+/***/ }),
+
 /***/ "./resources/ts/libraries/libraries.ts":
 /*!*********************************************!*\
   !*** ./resources/ts/libraries/libraries.ts ***!
