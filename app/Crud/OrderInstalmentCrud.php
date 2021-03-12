@@ -9,33 +9,33 @@ use App\Exceptions\NotAllowedException;
 use App\Models\User;
 use TorMorten\Eventy\Facades\Events as Hook;
 use Exception;
-use App\Models\CustomerReward;
+use App\Models\OrderInstalment;
 
-class CustomerRewardCrud extends CrudService
+class OrderInstalmentCrud extends CrudService
 {
     /**
      * define the base table
      * @param  string
      */
-    protected $table      =   'nexopos_customers_rewards';
+    protected $table      =   'nexopos_orders_instalments';
 
     /**
      * default slug
      * @param  string
      */
-    protected $slug         =   'customers/{customer_id}/rewards';
+    protected $slug   =   'orders/instalments';
 
     /**
      * Define namespace
      * @param  string
      */
-    protected $namespace  =   'ns.customers-rewards';
+    protected $namespace  =   'ns.orders-instalments';
 
     /**
      * Model Used
      * @param  string
      */
-    protected $model      =   CustomerReward::class;
+    protected $model      =   OrderInstalment::class;
 
     /**
      * Define permissions
@@ -54,7 +54,8 @@ class CustomerRewardCrud extends CrudService
      * @param  array
      */
     public $relations   =  [
-        [ 'nexopos_customers as customer', 'customer.id', '=', 'nexopos_customers_rewards.customer_id' ]
+        [ 'nexopos_orders as order', 'order.id', '=', 'nexopos_orders_instalments.order_id' ],
+        [ 'nexopos_customers as customer', 'customer.id', '=', 'order.id' ],
     ];
 
     /**
@@ -93,7 +94,7 @@ class CustomerRewardCrud extends CrudService
     /**
      * Fields which will be filled during post/put
      */
-    public $fillable    =   [ 'target', 'points' ];
+        public $fillable    =   [];
 
     /**
      * Define Constructor
@@ -114,15 +115,15 @@ class CustomerRewardCrud extends CrudService
     public function getLabels()
     {
         return [
-            'list_title'            =>  __( 'Customer Rewards List' ),
-            'list_description'      =>  __( 'Display all customer rewards.' ),
-            'no_entry'              =>  __( 'No customer rewards has been registered' ),
-            'create_new'            =>  __( 'Add a new customer reward' ),
-            'create_title'          =>  __( 'Create a new customer reward' ),
-            'create_description'    =>  __( 'Register a new customer reward and save it.' ),
-            'edit_title'            =>  __( 'Edit customer reward' ),
-            'edit_description'      =>  __( 'Modify  Customer Reward.' ),
-            'back_to_list'          =>  __( 'Return to Customer Rewards' ),
+            'list_title'            =>  __( 'Order Instalments List' ),
+            'list_description'      =>  __( 'Display all Order Instalments.' ),
+            'no_entry'              =>  __( 'No Order Instalment has been registered' ),
+            'create_new'            =>  __( 'Add a new Order Instalment' ),
+            'create_title'          =>  __( 'Create a new Order Instalment' ),
+            'create_description'    =>  __( 'Register a new Order Instalment and save it.' ),
+            'edit_title'            =>  __( 'Edit Order Instalment' ),
+            'edit_description'      =>  __( 'Modify  Order Instalment.' ),
+            'back_to_list'          =>  __( 'Return to Order Instalment' ),
         ];
     }
 
@@ -155,16 +156,30 @@ class CustomerRewardCrud extends CrudService
                     'fields'    =>  [
                         [
                             'type'  =>  'text',
-                            'name'  =>  'points',
-                            'label' =>  __( 'Points' ),
-                            'value' =>  $entry->points ?? '',
+                            'name'  =>  'amount',
+                            'label' =>  __( 'Amount' ),
+                            'value' =>  $entry->amount ?? '',
                         ], [
                             'type'  =>  'text',
-                            'name'  =>  'target',
-                            'label' =>  __( 'Target' ),
-                            'value' =>  $entry->target ?? '',
-                        ], 
-                    ]
+                            'name'  =>  'date',
+                            'label' =>  __( 'Date' ),
+                            'value' =>  $entry->date ?? '',
+                        ], [
+                            'type'  =>  'text',
+                            'name'  =>  'id',
+                            'label' =>  __( 'Id' ),
+                            'value' =>  $entry->id ?? '',
+                        ], [
+                            'type'  =>  'text',
+                            'name'  =>  'order_id',
+                            'label' =>  __( 'Order_id' ),
+                            'value' =>  $entry->order_id ?? '',
+                        ], [
+                            'type'  =>  'text',
+                            'name'  =>  'paid',
+                            'label' =>  __( 'Paid' ),
+                            'value' =>  $entry->paid ?? '',
+                        ],                     ]
                 ]
             ]
         ];
@@ -185,7 +200,7 @@ class CustomerRewardCrud extends CrudService
      * @param  array of fields
      * @return  array of fields
      */
-    public function filterPutInputs( $inputs, CustomerReward $entry )
+    public function filterPutInputs( $inputs, OrderInstalment $entry )
     {
         return $inputs;
     }
@@ -209,10 +224,10 @@ class CustomerRewardCrud extends CrudService
     /**
      * After saving a record
      * @param  Request $request
-     * @param  CustomerReward $entry
+     * @param  OrderInstalment $entry
      * @return  void
      */
-    public function afterPost( $request, CustomerReward $entry )
+    public function afterPost( $request, OrderInstalment $entry )
     {
         return $request;
     }
@@ -263,7 +278,7 @@ class CustomerRewardCrud extends CrudService
      * @return  void
      */
     public function beforeDelete( $namespace, $id, $model ) {
-        if ( $namespace == 'ns.customers-rewards' ) {
+        if ( $namespace == 'ns.orders-instalments' ) {
             /**
              *  Perform an action before deleting an entry
              *  In case something wrong, this response can be returned
@@ -287,37 +302,32 @@ class CustomerRewardCrud extends CrudService
      */
     public function getColumns() {
         return [
-            'customer_name'     =>  [
-                'label'         =>  __( 'Customer' ),
+            'customer_name'  =>  [
+                'label'  =>  __( 'Customer' ),
                 '$direction'    =>  '',
                 '$sort'         =>  false
             ],
-            'reward_name'       =>  [
-                'label'         =>  __( 'Reward Name' ),
+            'order_code'  =>  [
+                'label'  =>  __( 'Order' ),
                 '$direction'    =>  '',
                 '$sort'         =>  false
             ],
-            'points'            =>  [
-                'label'         =>  __( 'Points' ),
+            'amount'  =>  [
+                'label'  =>  __( 'Amount' ),
                 '$direction'    =>  '',
                 '$sort'         =>  false
             ],
-            'target'            =>  [
-                'label'         =>  __( 'Target' ),
+            'date'  =>  [
+                'label'  =>  __( 'Date' ),
                 '$direction'    =>  '',
                 '$sort'         =>  false
             ],
-            'updated_at'        =>  [
-                'label'         =>  __( 'Last Update' ),
+            'paid'  =>  [
+                'label'  =>  __( 'Paid' ),
                 '$direction'    =>  '',
                 '$sort'         =>  false
             ],
         ];
-    }
-
-    public function hook( $query )
-    {
-        return $query->where( 'customer_id', request()->query( 'customer_id' ) );
     }
 
     /**
@@ -329,19 +339,22 @@ class CustomerRewardCrud extends CrudService
         $entry->{ '$checked' }  =   false;
         $entry->{ '$toggled' }  =   false;
         $entry->{ '$id' }       =   $entry->id;
-
+        $entry->amount          =   ( string ) ns()->currency->define( $entry->amount );
+        $entry->{ '$cssClass' } =   $entry->paid == 0 ? 'bg-red-200 border-b border-red-400' : 'bg-green-200 border-b border-green-400';
+        $entry->paid            =   ( bool ) $entry->paid ? __( 'Yes' ) : __( 'No' );
+        $entry->date            =   ns()->date->getFormatted( $entry->date );
         // you can make changes here
         $entry->{'$actions'}    =   [
             [
                 'label'         =>      __( 'Edit' ),
                 'namespace'     =>      'edit',
                 'type'          =>      'GOTO',
-                'url'           =>      ns()->url( '/dashboard/' . $this->getSlug() . '/edit/' . $entry->id )
+                'url'           =>      ns()->url( '/dashboard/' . $this->slug . '/edit/' . $entry->id )
             ], [
                 'label'     =>  __( 'Delete' ),
                 'namespace' =>  'delete',
                 'type'      =>  'DELETE',
-                'url'       =>  ns()->url( '/api/nexopos/v4/crud/ns.customers-rewards/' . $entry->id ),
+                'url'       =>  ns()->url( '/api/nexopos/v4/crud/ns.orders-instalments/' . $entry->id ),
                 'confirm'   =>  [
                     'message'  =>  __( 'Would you like to delete this ?' ),
                 ]
@@ -349,11 +362,6 @@ class CustomerRewardCrud extends CrudService
         ];
 
         return $entry;
-    }
-
-    public function getSlug()
-    {
-        return str_replace( '{customer_id}', request()->query( 'customer_id' ), $this->slug );
     }
 
     
@@ -387,7 +395,7 @@ class CustomerRewardCrud extends CrudService
 
             foreach ( $request->input( 'entries' ) as $id ) {
                 $entity     =   $this->model::find( $id );
-                if ( $entity instanceof CustomerReward ) {
+                if ( $entity instanceof OrderInstalment ) {
                     $entity->delete();
                     $status[ 'success' ]++;
                 } else {
@@ -407,11 +415,11 @@ class CustomerRewardCrud extends CrudService
     public function getLinks()
     {
         return  [
-            'list'      =>  'javascript:void(0)',
-            'create'    =>  'javascript:void(0)',
-            'edit'      =>  ns()->url( 'dashboard/' . $this->getSlug() . '/edit/' ),
-            'post'      =>  ns()->url( 'api/nexopos/v4/crud/' . 'ns.customers-rewards' ),
-            'put'       =>  ns()->url( 'api/nexopos/v4/crud/' . 'ns.customers-rewards/{id}' . '' ),
+            'list'      =>  ns()->url( 'dashboard/' . 'orders/instalments' ),
+            'create'    =>  ns()->url( 'dashboard/' . 'orders/instalments/create' ),
+            'edit'      =>  ns()->url( 'dashboard/' . 'orders/instalments/edit/' ),
+            'post'      =>  ns()->url( 'api/nexopos/v4/crud/' . 'ns.orders-instalments' ),
+            'put'       =>  ns()->url( 'api/nexopos/v4/crud/' . 'ns.orders-instalments/{id}' . '' ),
         ];
     }
 
