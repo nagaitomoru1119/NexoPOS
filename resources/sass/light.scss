@@ -1,21 +1,17 @@
 .ns-box {
-    @apply bg-slate-700 text-slate-300;
+    @apply bg-white;
 
     .ns-box-header {
-        @apply border-slate-800 text-slate-300
-    }
-
-    .ns-box-body {
-        @apply text-slate-300;
+        @apply border-gray-200 text-gray-700
     }
 
     .ns-box-footer {
-        @apply border-slate-800;
+        @apply border-gray-200;
     }
 }
 
 .ns-notice-danger {
-    @apply border-red-600 bg-red-400 text-white;
+    @apply border-red-600 bg-red-200 text-gray-700;
 
     pre {
         @apply bg-gray-700 text-white
@@ -23,7 +19,7 @@
 }
 
 .ns-normal-text {
-    @apply text-slate-300;
+    @apply text-gray-800;
 }
 
 /**
@@ -34,7 +30,10 @@
         @apply bg-green-400 text-white;
     }
     &.ns-button-danger {
-        @apply bg-red-600 text-white;
+        @apply bg-red-400 text-white;    
+    }
+    &.ns-button-info {
+        @apply bg-blue-400 text-white;
     }
     &.ns-button-warning {
         @apply bg-orange-400 text-white;
@@ -42,17 +41,13 @@
     &.ns-button-default {
         @apply bg-white text-gray-800;
     }
-    &.ns-button-info {
-        @apply bg-blue-600 text-white;
-    }
     .ns-disabled {
         @apply bg-gray-400 border border-gray-500 cursor-not-allowed text-gray-600;
     }
 }
 
-
 #main-container, #page-container {
-    @apply bg-gray-900;
+    @apply bg-gray-300;
 }
 
 /**
@@ -60,26 +55,24 @@
 **/
 // .ns-switch
 .ns-switch button.selected {
-    @apply bg-blue-500 text-white;
-} 
+    @apply bg-blue-400 text-white;
+}
 .ns-switch button.unselected {
-    @apply bg-slate-600 text-slate-400;
+    @apply bg-gray-100 text-gray-800;
 }
 
 // .ns-select
 .ns-select select {
-    @apply text-slate-300;
-    option {
-        @apply bg-slate-600;
-    }
+    @apply text-gray-700;
 }
 
-// ns-input, ns-switch, .ns-select
-.ns-input, .ns-switch, .ns-select, .ns-textarea, .ns-media {
+// .ns-input, .ns-switch, .ns-select
+.ns-input, .ns-switch, .ns-select, .ns-textarea, .ns-media
+{
     [disabled] {
-        @apply bg-slate-800;
+        @apply bg-gray-200;
     }
-    
+
     .ns-enabled {
         @apply bg-transparent;
     }
@@ -90,33 +83,33 @@
         }
     
         .is-pristine {
-            @apply text-slate-300;
+            @apply text-gray-700
         }
     }
 
     div {
         &.has-error {
-            @apply border-red-600;
+            @apply border-red-400;
         }
         &.is-pristine {
-            @apply border-slate-600;
+            @apply border-gray-200;
         }
     }
 
-    .leading {
-        @apply text-slate-300;
+    .ns-leading {
+        @apply text-gray-500;
     }
 
     input {
-        @apply text-slate-300 outline-none;
+        @apply outline-none;
     }
 
     p.ns-description {
-        @apply text-slate-300;
+        @apply text-gray-500;
     }
 
     p.ns-error {
-       @apply text-red-600; 
+       @apply text-red-400; 
     }
 }
 
@@ -131,7 +124,7 @@
     input {
         @apply border-blue-200 bg-blue-100 rounded;
         &[disabled] {
-            @apply bg-gray-800;
+            @apply bg-gray-300;
         }
     }
     p {
@@ -169,6 +162,9 @@
     tbody td {
         @apply border-gray-200 text-gray-700;
     }
+    tbody tr {
+        @apply border-gray-200   text-gray-700;
+    }
     tfoot td {
         @apply border-gray-200 text-gray-700;
     }
@@ -194,58 +190,59 @@
  * Crud
 **/
 #crud-table {
-    .create-button { 
-        @apply border-slate-700 bg-slate-600 text-slate-300;    
-        &:hover {
-            @apply bg-slate-500 border-slate-600;
-        }
-    } 
+    .create-button {
+        @apply text-gray-800 bg-white border-gray-400;
     
-    .ns-table-row {
-        @apply border-slate-700;
+        &:hover {
+            @apply text-white bg-blue-400 border-blue-400;
+        }
+    }    
 
+    .ns-table-row {
+        @apply border-gray-200;
+        
         td {
-            @apply border-slate-700 text-slate-300;
+            @apply text-gray-700 border-gray-200;
         }
 
         .ns-row-button {
-            @apply bg-slate-600 text-slate-300 border-slate-700;
+            @apply border-gray-400;
 
             &:hover {
-                @apply bg-slate-500 text-slate-300 border-transparent;
+                @apply bg-blue-400 text-white border-transparent;
             }
         }
 
         .ns-menu-wrapper > div {
-            @apply bg-slate-600;
+            @apply bg-white;
         }
 
         .ns-action-button {
-            @apply text-slate-300;
+            @apply text-gray-700;
 
             &:hover {
-                @apply bg-slate-500 text-slate-200;
+                @apply bg-gray-100 text-gray-900;
             }
 
             &:focus {
-                @apply focus:outline-none focus:bg-slate-800 focus:text-slate-200;
+                @apply focus:outline-none focus:bg-gray-100 focus:text-gray-900;
             }
         }
     }
 
     .ns-query-filter {
-        @apply border-slate-800;
+        @apply bg-white;
 
         &.table-filters-enabled {
-            @apply bg-blue-400 text-slate-200;
+            @apply bg-blue-100 border-blue-200;
         }
     
         &.table-filters-disabled {
-            @apply text-slate-300 border-slate-700;
+            @apply text-gray-800 border-gray-400;
         }
 
         &:hover {
-            @apply border-slate-500 text-white bg-slate-500;
+            @apply border-blue-400 text-white bg-blue-400;
         }
     }
 }
@@ -254,30 +251,39 @@
  * Dashboard Menu Button
 **/
 .ns-toggle-button { 
-    @apply text-slate-300 border-slate-800;
+    @apply border-gray-400 text-gray-800;
 
     &:hover {
-        @apply text-slate-200 bg-slate-600 border-slate-600;
-    }
-    
-    .toggled {
-        @apply bg-slate-600 text-slate-300;
+        @apply bg-white  text-gray-700  shadow-lg  border-opacity-0;
     }
 
+    .toggled {
+        @apply bg-white border-transparent;
+    }
     .untoggled {
         @apply border-gray-400;
     }
 }
 
 .ns-avatar { 
-    @apply text-slate-300 border-slate-800;
+    @apply text-slate-300;
 
     &:hover {
-        @apply bg-slate-600 text-slate-300 border-slate-600;
+        @apply bg-slate-600 text-slate-300;
     }
+}
 
-    &.toggled {
-        @apply bg-slate-600 text-slate-300 border-slate-600;
+
+/**
+ * Notifications Wrapper
+**/
+
+#notificaton-wrapper {
+    #notification-button.visible {
+        @apply bg-white;
+    }
+    #notification-button.hidden {
+        @apply border-gray-400;
     }
 }
 
@@ -287,27 +293,31 @@
 
 #notificaton-wrapper {
     #notification-button {
-        &.panel-visible {
-            @apply bg-slate-600;
+        .visible {
+            @apply bg-white;
         }
-        &.panel-hidden {
-            @apply border-slate-800;
+
+        .hidden {
+            @apply border-gray-400;
         }
 
         &:hover {
-            @apply bg-slate-600 border-slate-600 text-slate-300;
+            @apply bg-white text-gray-700
         }
 
-        @apply text-slate-300;
+        @apply text-gray-800;
     }
 
     #notification-center > div > div {
-        @apply bg-slate-600;
+        @apply bg-white;
     }
 
     .clear-all {
+        
+        @apply text-red-400;
+
         &:hover {
-            @apply bg-slate-500 text-red-300;
+            @apply bg-red-100 text-red-500;
         }
     }
 }
